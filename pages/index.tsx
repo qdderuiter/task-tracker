@@ -4,11 +4,15 @@ import { useState, useMemo } from "react";
 import { AddTaskForm } from "@/components/AddTaskForm";
 import { Button } from "@/components/ui/button"; // Import Button
 
+// Define predefined time tracking codes
+const TIME_TRACKING_CODES = ["DEV", "MEETING", "ADMIN", "TESTING", "DOCS"];
+
 interface Task {
 	id?: string;
 	name: string;
 	estimatedTime: number;
 	timeUnit: "Minutes" | "Hours" | "Days";
+	code?: string; // Add optional code field
 }
 
 const HOURS_PER_DAY = 8;
@@ -51,7 +55,8 @@ export default function Home() {
 		<main className="container mx-auto p-4">
 			<h1 className="text-2xl font-bold mb-4">Task Tracker</h1>
 
-			<AddTaskForm onAddTask={handleAddTask} />
+			{/* Pass the codes to the form */}
+			<AddTaskForm onAddTask={handleAddTask} availableCodes={TIME_TRACKING_CODES} />
 
 			<div className="mt-8">
 				<h2 className="text-xl font-semibold mb-2">Tasks</h2>
@@ -69,6 +74,8 @@ export default function Home() {
 									className="flex justify-between items-center p-2 border rounded"
 								>
 									<span>
+										{/* Display code if it exists */}
+										{task.code && <span className="font-mono bg-gray-200 px-1 rounded mr-2">{task.code}</span>}
 										{task.name} - {task.estimatedTime} {task.timeUnit}
 									</span>
 									<Button

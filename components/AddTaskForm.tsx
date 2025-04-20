@@ -19,16 +19,20 @@ interface Task {
 	name: string;
 	estimatedTime: number;
 	timeUnit: TimeUnit;
+	code?: string; // Add optional code field
 }
 
 export function AddTaskForm({
 	onAddTask,
+	availableCodes, // Add prop for codes
 }: {
 	onAddTask: (task: Task) => void;
+	availableCodes: string[]; // Define prop type
 }) {
 	const [taskName, setTaskName] = useState("");
 	const [estimatedTime, setEstimatedTime] = useState("");
 	const [timeUnit, setTimeUnit] = useState<TimeUnit>("Minutes");
+	const [selectedCode, setSelectedCode] = useState<string>(""); // State for selected code
 
 	const handleSubmit = (event: React.FormEvent) => {
 		event.preventDefault();
@@ -38,11 +42,13 @@ export function AddTaskForm({
 				name: taskName,
 				estimatedTime: time,
 				timeUnit: timeUnit,
+				code: selectedCode || undefined, // Include selected code (or undefined if empty)
 			});
 			// Reset form
 			setTaskName("");
 			setEstimatedTime("");
-			setTimeUnit("Hours"); // Reset to Hours after submission
+			setTimeUnit("Minutes"); // Reset to Minutes
+			setSelectedCode(""); // Reset code
 		} else {
 			// Basic validation feedback (can be improved)
 			alert(
@@ -67,6 +73,27 @@ export function AddTaskForm({
 					required
 				/>
 			</div>
+
+			{/* Code Selection Dropdown */}
+			<div className="space-y-2">
+				<Label htmlFor="taskCode">Time Code (Optional)</Label>
+				<Select value={selectedCode} onValueChange={(value) => setSelectedCode(value === "no-code" ? "" : value)}> {/* Update onValueChange */}
+					<SelectTrigger id="taskCode" className="w-full">
+						<SelectValue placeholder="Select a code..." />
+					</SelectTrigger>
+					<SelectContent>
+						<SelectItem value="no-code"> {/* Change value to "no-code" */}
+							_No Code_
+						</SelectItem>
+						{availableCodes.map((code) => (
+							<SelectItem key={code} value={code}>
+								{code}
+							</SelectItem>
+						))}
+					</SelectContent>
+				</Select>
+			</div>
+
 			<div className="flex flex-col sm:flex-row sm:gap-4">
 				<div className="flex-grow space-y-2">
 					<Label htmlFor="estimatedTime" className="cursor-pointer">
