@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react"; // Import useEffect
 import { AddTaskForm } from "@/components/AddTaskForm";
 import { Button } from "@/components/ui/button"; // Import Button
 
@@ -18,7 +18,25 @@ interface Task {
 const HOURS_PER_DAY = 8;
 
 export default function Home() {
+	// Initialize tasks state as an empty array
 	const [tasks, setTasks] = useState<Task[]>([]);
+
+	// Load tasks from localStorage on component mount
+	useEffect(() => {
+		if (typeof window !== "undefined") {
+			const savedTasks = localStorage.getItem("tasks");
+			if (savedTasks) {
+				setTasks(JSON.parse(savedTasks));
+			}
+		}
+	}, []); // Empty dependency array ensures this runs only once on mount
+
+	// Save tasks to localStorage whenever the tasks state changes
+	useEffect(() => {
+		if (typeof window !== "undefined") {
+			localStorage.setItem("tasks", JSON.stringify(tasks));
+		}
+	}, [tasks]); // This effect runs whenever tasks state changes
 
 	const handleAddTask = (newTask: Task) => {
 		setTasks((prevTasks) => [
