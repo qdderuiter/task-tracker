@@ -29,7 +29,6 @@ interface EditTaskFormProps {
 }
 
 export const EditTaskForm: React.FC<EditTaskFormProps> = ({
-    task,
     availableCodes,
     editingTaskName,
     setEditingTaskName,

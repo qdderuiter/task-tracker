@@ -3,10 +3,6 @@
 import { useState, useMemo, useEffect } from "react";
 import { AddTaskForm } from "@/components/AddTaskForm";
 import { Button } from "@/components/ui/button";
-import { TaskNameInput } from "@/components/TaskNameInput";
-import { EstimatedTimeInput } from "@/components/EstimatedTimeInput";
-import { TimeUnitSelect } from "@/components/TimeUnitSelect";
-import { TimeCodeSelect } from "@/components/TimeCodeSelect";
 import { EditTaskForm } from "@/components/EditTaskForm";
 
 const TIME_TRACKING_CODES = ["DEV", "MEETING", "ADMIN", "TESTING", "DOCS"];
